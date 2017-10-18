@@ -1,0 +1,22 @@
+- name: Get already exist users
+  shell: getent passwd | awk -F':' '{ print $1 }'
+  register: exists_user_list
+
+- name: Create Global Users
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups | default([]) | join(',') }}"
+    password: ""
+    update_password: on_create
+  register: ret_global_users
+  with_items: "{{ global_users }}"
+
+- name: Load Public Keys
+  include_vars: "public_key.yml"
+
+- name: Set authorized_key to Global Users
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ public_key[item.name] }}"
+  when: public_key[item.name] is defined
+  with_items: "{{ global_users }}"

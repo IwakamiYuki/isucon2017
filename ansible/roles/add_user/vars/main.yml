@@ -1,0 +1,4 @@
+global_users:
+  - name: iwakami_yuki
+    groups:
+      - sudo

@@ -1,0 +1,1 @@
+isucon-test ansible_host=163.43.30.176 ansible_ssh_pass=isucon-test ansible_become_pass=isucon-test
