@@ -1,0 +1,18 @@
+[Unit]
+Description=The PHP FastCGI Process Manager
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+PIDFile=/run/php-fpm/php-fpm.pid
+EnvironmentFile-=/etc/sysconfig/php-fpm
+ExecStart={{ phpenv_root }}/shims/php-fpm --nodaemonize
+ExecReload=/bin/kill -USR2 $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+UMask=002
+OOMScoreAdjust=-1000
+
+[Install]
+WantedBy=multi-user.target

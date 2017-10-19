@@ -1,0 +1,28 @@
+phpenv_root: /opt/anyenv/envs/phpenv
+
+phpenv_plugins:
+  - name: php-build
+    repo: php-build/php-build
+  - name: phpenv-update
+    repo: rogeriopradoj/phpenv-update
+  - name: phpenv-common-deps-install
+    repo: rogeriopradoj/phpenv-common-deps-install
+
+php_build_deps:
+  - gcc
+  - curl
+  - autoconf
+  - pkg-config
+  - re2c
+  - bison
+  - libbz2-dev
+  - libcurl4-openssl-dev
+  - libpng3-dev
+  - libjpeg-dev
+  - libxml2-dev
+  - libssl-dev
+  - libtidy-dev
+  - libxslt-dev
+  - libmcrypt-dev
+  - libreadline-dev
+  - libsslcommon2-dev

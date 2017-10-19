@@ -1,0 +1,5 @@
+
+- name: Reload php-fpm
+  systemd:
+    name: php-fpm
+    state: reloaded

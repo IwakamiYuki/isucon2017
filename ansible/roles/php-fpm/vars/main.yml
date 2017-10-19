@@ -1,0 +1,2 @@
+
+phpenv_global_root: "{{ phpenv_root }}/versions/{{ phpenv_global_version }}"

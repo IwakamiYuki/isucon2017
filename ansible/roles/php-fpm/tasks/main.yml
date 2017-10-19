@@ -1,0 +1,54 @@
+
+- name: Copy php-fpm service setting files
+  template:
+    src: php-fpm.service
+    dest: /etc/systemd/system
+  register: unit_override
+
+- name: Create application log directory
+  file:
+    path: /var/log/php-fpm
+    state: directory
+    mode: 0777
+
+- name: Setting createing folder at bootup
+  copy:
+    src: tmpfiles_php-fpm.conf
+    dest: /etc/tmpfiles.d/tmpfiles_php-fpm.conf
+
+- name: Create socket directory
+  file:
+    path: /var/run/php-fpm
+    state: directory
+    mode: 0777
+
+- name: Copy php.ini file
+  copy:
+    src: php.ini
+    dest: "{{ phpenv_global_root }}/etc/php.ini"
+  notify: Reload php-fpm
+
+- name: Copy php conf.d files
+  copy:
+    src: conf.d/
+    dest: "{{ phpenv_global_root }}/etc/conf.d/"
+  notify: Reload php-fpm
+
+- name: Copy php-fpm.conf file
+  copy:
+    src: php-fpm.conf
+    dest: "{{ phpenv_global_root }}/etc/php-fpm.conf"
+  notify: Reload php-fpm
+
+- name: Copy php-fpm.d files
+  copy:
+    src: www.conf
+    dest: "{{ phpenv_global_root }}/etc/php-fpm.d/www.conf"
+  notify: Reload php-fpm
+
+- name: Enable and Start php-fpm
+  systemd:
+    name: php-fpm
+    enabled: yes
+    state: started
+    daemon_reload: "{{ unit_override | changed }}"

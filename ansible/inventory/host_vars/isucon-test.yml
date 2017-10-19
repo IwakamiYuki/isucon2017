@@ -1,0 +1,10 @@
+
+nginx_document_root: /usr/share/nginx/html
+
+phpenv_global_version: 7.1.10
+
+phpenv_root: /opt/anyenv/envs/phpenv
+phpenv_install_versions:
+  - version: 7.1.10
+    global: yes
+    packages: []

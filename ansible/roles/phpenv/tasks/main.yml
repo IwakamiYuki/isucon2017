@@ -1,0 +1,50 @@
+
+- name: Check phpenv installed
+  command: bash -lc "anyenv version"
+  changed_when: false
+  register: ret
+
+- name: Install phpenv
+  command: bash -lc "anyenv install phpenv"
+  register: ret
+  when: "'phpenv' not in ret.stdout"
+
+- name: Initialize phpenv
+  command: bash -lc "phpenv version"
+  when: ret.changed
+
+- name: Install php-build
+  git:
+    repo: https://github.com/{{ item.repo }}.git
+    dest: "{{ phpenv_root }}/plugins/{{ item.name }}"
+  with_items: "{{ phpenv_plugins }}"
+
+- name: Install dependency libs
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ php_build_deps }}"
+
+- name: Check global php version
+  command: bash -lc "phpenv global"
+  register: before_global_version
+  changed_when: false
+  ignore_errors: yes
+
+- name: Install php
+  include: install.yml
+  with_items: "{{ phpenv_install_versions }}"
+  loop_control:
+    loop_var: phpinfo
+
+- name: Set global php version
+  command: bash -lc "phpenv global {{ item.version }}"
+  when:
+    - item.global | default(False)
+    - item.version != before_global_version.stdout
+  register: phpenv_global
+  with_items: "{{ phpenv_install_versions }}"
+
+- name: Rehash phpenv
+  command: bash -lc "phpenv rehash"
+  when: phpenv_global.changed
+
