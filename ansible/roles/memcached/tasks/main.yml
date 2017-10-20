@@ -1,0 +1,27 @@
+
+- name: Install packages
+  apt:
+    name: memcached
+
+- name: Create service.d folder
+  file:
+    path: /etc/systemd/system/memcached.service.d/
+    state: directory
+
+- name: Copy limits.conf 
+  copy:
+    src: limits.conf
+    dest: /etc/systemd/system/memcached.service.d/limits.conf
+  register: ret_svc
+
+- name: Copy memcached setting file
+  copy:
+    src: memcached.conf
+    dest: /etc/memcached.conf
+  notify: Restart memcached
+
+- name: Enable and Start memcached
+  systemd:
+    name: memcached
+    enabled: yes
+    state: started

@@ -1,0 +1,51 @@
+
+- name: create 20-nproc.conf
+  file:
+    path: /etc/security/limits.d/20-nproc.conf
+    state: touch
+
+- name: Modify limits settings
+  pam_limits:
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.type }}"
+    limit_item: "{{ item.item }}"
+    value: "{{ item.value }}"
+    dest: "{{ item.dest | default('/etc/security/limits.conf') }}"
+  with_items: "{{ limits_param }}"
+
+- name: Modify systemd settings about default limits 
+  lineinfile:
+    dest: /etc/systemd/system.conf
+    regexp: DefaultLimit{{ item.key | upper }}=
+    line: DefaultLimit{{ item.key | upper }}={{ item.value }}
+  with_dict: "{{ systemd_default_limits_param }}"
+
+- name: Modify sysctl settings
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  with_items: "{{ sysctl_param }}"
+
+- name: Copy disabling transparent huge pages service file
+  copy:
+    src: disable-transparent-huge-pages.service
+    dest: /etc/systemd/system
+  register: ret
+
+- name: Enable and Start disable-transparent-huge-pages.service
+  systemd:
+    name: disable-transparent-huge-pages
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when: ret | changed
+
+- name: Install base packages
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ apt_install_pkg }}"
+
+- name: Start and Enable numad
+  service:
+    name: numad
+    state: started

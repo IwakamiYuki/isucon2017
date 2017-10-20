@@ -1,0 +1,22 @@
+
+- name: Add gpg key
+  apt_key:
+    url: https://download.newrelic.com/548C16BF.gpg
+
+- name: Add repo
+  apt_repository:
+    repo: deb http://apt.newrelic.com/debian/ newrelic non-free
+    filename: newrelic
+
+- name: Install newrelic
+  command:
+    cmd: bash -lc "newrelic-install install"
+  environment:
+    NR_INSTALL_SILENT: "true"
+    NR_INSTALL_KEY: "{{ newrelic_license_key }}"
+  notify: Restart php-fpm
+
+- name: Disable xdebug
+  file:
+    path: "{{ phpenv_root }}/versions/{{ phpenv_global_version }}/etc/conf.d/xdebug.ini"
+    state: absent

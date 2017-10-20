@@ -8,11 +8,14 @@ Type=simple
 PIDFile=/run/php-fpm/php-fpm.pid
 EnvironmentFile-=/etc/sysconfig/php-fpm
 ExecStart={{ phpenv_root }}/shims/php-fpm --nodaemonize
+ExecStartPost=/usr/local/bin/set-php-fpm-affinity.sh
 ExecReload=/bin/kill -USR2 $MAINPID
 ExecStop=/bin/kill -s QUIT $MAINPID
 PrivateTmp=true
 UMask=002
 OOMScoreAdjust=-1000
+LimitNOFILE=1006500
+LimitNPROC=1006500
 
 [Install]
 WantedBy=multi-user.target

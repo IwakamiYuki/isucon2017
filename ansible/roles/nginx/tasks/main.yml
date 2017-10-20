@@ -18,6 +18,17 @@
     update_cache: yes
     allow_unauthenticated: yes
 
+- name: Create service.d folder
+  file:
+    path: /etc/systemd/system/nginx.service.d/
+    state: directory
+
+- name: Copy limits.conf 
+  copy:
+    src: limits.conf
+    dest: /etc/systemd/system/nginx.service.d/limits.conf
+  register: ret_svc
+
 - name: Delete default.conf
   file:
     path: /etc/nginx/conf.d/default.conf
@@ -41,3 +52,4 @@
     name: nginx
     state: started
     enabled: yes
+    daemon_reload: "{{ ret_svc | changed }}"

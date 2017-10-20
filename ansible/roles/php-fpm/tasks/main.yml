@@ -1,4 +1,10 @@
 
+- name: Copy setting affinity script
+  template:
+    src: set-php-fpm-affinity.sh
+    dest: /usr/local/bin/set-php-fpm-affinity.sh
+    mode: 0755
+
 - name: Copy php-fpm service setting files
   template:
     src: php-fpm.service

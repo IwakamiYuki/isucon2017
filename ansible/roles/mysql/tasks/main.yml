@@ -1,0 +1,28 @@
+
+- name: Install packages
+  apt:
+    name: mysql-server
+
+- name: Create service.d folder
+  file:
+    path: /etc/systemd/system/mysql.service.d/
+    state: directory
+
+- name: Copy limits.conf 
+  template:
+    src: limits.conf
+    dest: /etc/systemd/system/mysql.service.d/limits.conf
+  register: ret_svc
+
+- name: Copy mysql setting file
+  template:
+    src: mysqld.cnf
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  notify: Restart mysql
+
+- name: Enable and Start mysql
+  systemd:
+    name: mysql
+    enabled: yes
+    state: started
+    daemon_reload: "{{ ret_svc.changed }}"

@@ -1,0 +1,28 @@
+
+- name: Install redis
+  apt:
+    name: redis-server
+
+- name: Create service.d folder
+  file:
+    path: /etc/systemd/system/redis.service.d/
+    state: directory
+
+- name: Copy limits.conf 
+  copy:
+    src: limits.conf
+    dest: /etc/systemd/system/redis.service.d/limits.conf
+  register: ret_svc
+
+- name: Copy redis setting file
+  copy:
+    src: redis.conf
+    dest: /etc/redis/redis.conf
+  notify: Restart redis
+
+- name: Enable and Start redis
+  systemd:
+    name: redis
+    enabled: yes
+    state: started
+    daemon_reload: "{{ ret_svc | changed }}"
