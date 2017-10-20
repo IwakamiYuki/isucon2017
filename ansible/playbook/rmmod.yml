@@ -1,0 +1,20 @@
+
+- hosts: all
+  become: yes
+
+  tasks:
+    - command:
+        cmd: rmmod {{ item }}
+      with_items:
+        - ipt_REJECT
+        - bluetooth
+        - nf_reject_ipv4
+        - xt_multiport
+        - iptable_filter
+        - ip_tables
+        - x_tables
+        - ppdev
+        - joydev
+        - input_leds
+        - floppy
+

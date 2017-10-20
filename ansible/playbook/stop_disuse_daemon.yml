@@ -1,0 +1,15 @@
+
+- hosts: all
+  become: yes
+
+  tasks:
+    - service:
+        name: "{{ item }}"
+        state: started
+      with_items:
+        - systemd-udevd
+        - ufw
+        - cron
+        - fail2ban
+        - acpid
+        - ntp
