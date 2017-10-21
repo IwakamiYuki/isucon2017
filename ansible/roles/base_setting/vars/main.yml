@@ -9,8 +9,7 @@ limits_param:
     value: 1006500
   - domain: "*"
     type: soft
-    item: nproc
-    value: 65536
+    item: nproc value: 65536
     dest: /etc/security/limits.d/20-nproc.conf
   - domain: "*"
     type: hard
@@ -100,3 +99,4 @@ apt_install_pkg:
   - silversearcher-ag
   - numactl
   - numad
+  - unzip

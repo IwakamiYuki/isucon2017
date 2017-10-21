@@ -37,12 +37,19 @@
     dest: "{{ phpenv_global_root }}/etc/php.ini"
   notify: Reload php-fpm
 
-# FIXME!!
 - name: Copy php conf.d files
   template:
     src: conf.d/{{ item.name }}
     dest: "{{ phpenv_global_root }}/etc/conf.d/{{ item.name }}"
-    state: "{{ item.state }}"
+  when: item.state|default('present') == 'present'
+  with_items: "{{ phpenv_confd_ini }}"
+  notify: Reload php-fpm
+
+- name: Delete php conf.d file if state is absent
+  file:
+    path: "{{ phpenv_global_root }}/etc/conf.d/{{ item.name }}"
+    state: absent
+  when: item.state|default('present') == 'absent'
   with_items: "{{ phpenv_confd_ini }}"
   notify: Reload php-fpm
 
