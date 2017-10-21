@@ -1,4 +1,7 @@
 
+- name: Include newrelic tasks
+  include_tasks: newrelic.yml
+
 - name: Copy setting affinity script
   template:
     src: set-php-fpm-affinity.sh
@@ -34,10 +37,13 @@
     dest: "{{ phpenv_global_root }}/etc/php.ini"
   notify: Reload php-fpm
 
+# FIXME!!
 - name: Copy php conf.d files
-  copy:
-    src: conf.d/
-    dest: "{{ phpenv_global_root }}/etc/conf.d/"
+  template:
+    src: conf.d/{{ item.name }}
+    dest: "{{ phpenv_global_root }}/etc/conf.d/{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ phpenv_confd_ini }}"
   notify: Reload php-fpm
 
 - name: Copy php-fpm.conf file

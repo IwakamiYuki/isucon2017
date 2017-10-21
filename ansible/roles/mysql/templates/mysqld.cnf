@@ -136,10 +136,14 @@ innodb_autoinc_lock_mode = 2
 skip_external_locking
 skip_name_resolve = ON
 
-slow_query_log = OFF
+# TODO: Check This!!!
+slow_query_log = ON
 slow_query_log_file = /var/log/mysql/mysql.slow
-long_query_time = 0.4
+long_query_time = 0
 min_examined_row_limit = 0
+
+# TODO: Check This!!!
+performance_schema = ON
 
 
 # DANGER!!!

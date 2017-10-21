@@ -3,6 +3,11 @@
   apt:
     name: memcached
 
+- name: Setting createing folder at bootup
+  copy:
+    src: tmpfiles_memcached.conf
+    dest: /etc/tmpfiles.d/tmpfiles_memcached.conf
+
 - name: Create service.d folder
   file:
     path: /etc/systemd/system/memcached.service.d/

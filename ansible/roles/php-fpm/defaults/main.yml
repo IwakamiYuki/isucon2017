@@ -1,2 +1,8 @@
 phpenv_root: /opt/anyenv/envs/phpenv
 phpenv_global_version: 7.1.10
+
+phpenv_confd_ini:
+  - name: xdebug.ini
+    state: present
+  - name: newrelic.ini
+    state: present

@@ -8,3 +8,10 @@ phpenv_install_versions:
   - version: 7.1.10
     global: yes
     packages: []
+
+# TODO: CHECK THIS!!!!
+phpenv_confd_ini:
+  - name: xdebug.ini
+    state: absent
+  - name: newrelic.ini
+    state: present

@@ -13,10 +13,5 @@
     cmd: bash -lc "newrelic-install install"
   environment:
     NR_INSTALL_SILENT: "true"
-    NR_INSTALL_KEY: "{{ newrelic_license_key }}"
+    NR_INSTALL_KEY: ""
   notify: Restart php-fpm
-
-- name: Disable xdebug
-  file:
-    path: "{{ phpenv_root }}/versions/{{ phpenv_global_version }}/etc/conf.d/xdebug.ini"
-    state: absent

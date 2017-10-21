@@ -47,6 +47,12 @@
     dest: /etc/nginx/conf.d/www.conf
   notify: Reload nginx
 
+  # TODO: Modify please!!
+- name: Download alp
+  unarchive:
+    src: https://github.com/tkuchiki/alp/releases/download/v0.3.1/alp_linux_amd64.zip
+    dest: /tmp
+
 - name: Start and Enable nginx
   service:
     name: nginx
