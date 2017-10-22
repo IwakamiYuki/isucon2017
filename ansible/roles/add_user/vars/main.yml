@@ -1,4 +1,7 @@
 global_users:
+  - name: tokuda_takuya
+    groups:
+      - sudo
   - name: iwakami_yuki
     groups:
       - sudo
