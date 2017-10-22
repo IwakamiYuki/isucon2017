@@ -567,7 +567,6 @@ $app->get('/deploy', function (Request $request, Response $response) {
 });
 
 $app->get('/iconsall', function (Request $request, Response $response) {
-	$filename = $request->getAttribute('filename');
 	$stmt = getPDO()->prepare("SELECT * FROM image ");
 	$stmt->execute();
 
