@@ -255,6 +255,64 @@ $app->get('/message', function (Request $request, Response $response) {
 	$channelId = $request->getParam('channel_id');
 	$lastMessageId = $request->getParam('last_message_id');
 
+	///// iwakami_2 start
+	$dbh = getPDO();
+	$stmt = $dbh->prepare(
+		"SELECT * " .
+		"FROM message " .
+		"WHERE id > ? AND channel_id = ? ORDER BY id DESC LIMIT 100"
+	);
+	$stmt->execute([$lastMessageId, $channelId]);
+	$rows = $stmt->fetchall();
+	$res = [];
+	$userIds = [];
+	foreach ($rows as $row)
+	{
+		$userIds[$row['user_id']] = true;
+	}
+	$userIdsString = '';
+	$userData = [];
+	foreach ($userIds as $userId => $value)
+	{
+		if ($userIdsString == '') {
+			$userIdsString = $userId;
+		} else {
+			$userIdsString .= ', ' . $userId;
+		}
+	}
+	$stmt = $dbh->prepare("SELECT name, display_name, avatar_icon FROM user WHERE id in = (?)");
+	$stmt->execute([$userIdsString]);
+	$userDataTmps = $stmt->fetchall();
+	foreach ($userDataTmps as $userDataTmp) {
+		$userData[$userDataTmp['id']] = $userDataTmp;
+	}
+
+	foreach ($rows as $row)
+	{
+		$r = [];
+		$r['id'] = (int)$row['id'];
+		$r['user'] = $userData[$row['user_id']];
+		$r['date'] = str_replace('-', '/', $row['created_at']);
+		$r['content'] = $row['content'];
+		$res[] = $r;
+	}
+	$res = array_reverse($res);
+
+	$maxMessageId = 0;
+	foreach ($rows as $row)
+	{
+		$maxMessageId = max($maxMessageId, $row['id']);
+	}
+	$stmt = $dbh->prepare(
+		"INSERT INTO haveread (user_id, channel_id, message_id, updated_at, created_at) " .
+		"VALUES (?, ?, ?, NOW(), NOW()) " .
+		"ON DUPLICATE KEY UPDATE message_id = ?, updated_at = NOW()"
+	);
+	$stmt->execute([$userId, $channelId, $maxMessageId, $maxMessageId]);
+
+	return $response->withJson($res);
+	///// iwakami_2 end
+
 	///// iwakami start
 	$dbh = getPDO();
 	$stmt = $dbh->prepare(
