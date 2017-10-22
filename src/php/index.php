@@ -280,7 +280,7 @@ $app->get('/message', function (Request $request, Response $response) {
 		$r['content'] = $row['content'];
 		$res[] = $r;
 	}
-	$res = array_reverse($res);
+	//$res = array_reverse($res);
 
 	var_dump($res);
 
