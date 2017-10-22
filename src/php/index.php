@@ -289,7 +289,6 @@ $app->get('/message', function (Request $request, Response $response) {
 });
 
 $app->get('/fetch', function (Request $request, Response $response) {
-	var_dump('aa');
 	$userId = FigRequestCookies::get($request, 'user_id')->getValue();
 	if ( ! $userId)
 	{
@@ -318,8 +317,6 @@ $app->get('/fetch', function (Request $request, Response $response) {
 		$res[] = $r;
 	}
 
-	var_dump($res);
-	return $response->withStatus(403);
 	return $response->withJson($res);
 
 	///// iwakami end
