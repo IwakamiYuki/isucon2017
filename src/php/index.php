@@ -582,8 +582,16 @@ $app->get('/icons/{filename}', function (Request $request, Response $response) {
 	return $response->withStatus(404);
 });
 
+
+
+$app->get('/deploy', function (Request $request, Response $response) {
+
+	$res = exec('sh /home/isucon/isubata/webapp/php/deploy.sh');
+	$response->write($res);
+	return $response->withStatus(200);
+});
+
 $app->get('/iconsall', function (Request $request, Response $response) {
-	$filename = $request->getAttribute('filename');
 	$stmt = getPDO()->prepare("SELECT * FROM image ");
 	$stmt->execute();
 
