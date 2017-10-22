@@ -30,10 +30,20 @@ function getPDO()
 	return $pdo;
 }
 
-for($i = 1; $i < 1002; $i++) {
+$dbh = getPDO();
+$stmt = $dbh->query('SELECT id FROM image');
+$rows = $stmt->fetchall();
+$imageIds = [];
+foreach ($rows as $row)
+{
+	$imageIds[] = (int)$row['id'];
+}
+
+
+for($i = 0; $i < count($imageIds); $i++) {
 
 	$stmt = getPDO()->prepare("SELECT * FROM image where id = ?");
-	$stmt->execute([$i]);
+	$stmt->execute([$imageIds[$i]]);
 
 	$rows = $stmt->fetchall();
 	foreach ($rows as $row)
