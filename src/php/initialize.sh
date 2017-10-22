@@ -7,7 +7,8 @@ cd /home/isucon/isubata/webapp/public
 
 if [ -f icons.tar ];then
   rm -rf icons
-  tar xf icons.tar
+#  tar xf icons.tar
+  mkdir icons
 fi
 
 ## cache
