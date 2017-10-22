@@ -267,6 +267,7 @@ $app->get('/message', function (Request $request, Response $response) {
 
 
 	$res = [];
+	var_dump('a');
 	foreach ($rows as $row)
 	{
 		$r = [];
