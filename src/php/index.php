@@ -299,6 +299,7 @@ $app->get('/fetch', function (Request $request, Response $response) {
 
 	///// iwakami start
 
+	/*
 	$dbh = getPDO();
 
 	$res = [];
@@ -318,6 +319,7 @@ $app->get('/fetch', function (Request $request, Response $response) {
 	}
 
 	return $response->withJson($res);
+	*/
 
 	///// iwakami end
 
