@@ -558,4 +558,21 @@ $app->get('/icons/{filename}', function (Request $request, Response $response) {
 	return $response->withStatus(404);
 });
 
+$app->get('/iconsall', function (Request $request, Response $response) {
+	$filename = $request->getAttribute('filename');
+	$stmt = getPDO()->prepare("SELECT * FROM image ");
+	$stmt->execute();
+
+	$rows = $stmt->fetchall();
+	foreach ($rows as $row)
+	{
+		$fp = fopen('/home/isucon/isubata/webapp/public/icons/' . $row['name'],'w');
+		fwrite($fp,$row['data']);
+		fclose($fp);
+	}
+
+	return $response->withStatus(200);
+});
+
+
 $app->run();
