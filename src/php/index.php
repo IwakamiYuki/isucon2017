@@ -282,7 +282,6 @@ $app->get('/message', function (Request $request, Response $response) {
 	}
 	$res = array_reverse($res);
 
-	var_dump($res);
 
 	//return $response->withStatus(403);
 	$maxMessageId = 0;
