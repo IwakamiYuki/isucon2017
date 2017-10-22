@@ -265,6 +265,23 @@ $app->get('/message', function (Request $request, Response $response) {
 	$stmt->execute([$lastMessageId, $channelId]);
 	$rows = $stmt->fetchall();
 
+
+	$res = [];
+	foreach ($rows as $row)
+	{
+		$r = [];
+		$r['id'] = (int)$row['id'];
+		$r['user'] = [
+			'name'         => $row['name'],
+			'display_name' => $row['display_name'],
+			'avatar_icon'  => $row['avator_icon'],
+		];
+		$r['date'] = str_replace('-', '/', $row['created_at']);
+		$r['content'] = $row['content'];
+		$res[] = $r;
+	}
+	$res = array_reverse($res);
+
 	var_dump($rows);
 
 	return $response->withStatus(403);
