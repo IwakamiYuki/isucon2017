@@ -278,14 +278,13 @@ $app->get('/message', function (Request $request, Response $response) {
 		];
 		$r['date'] = str_replace('-', '/', $row['created_at']);
 		$r['content'] = $row['content'];
-		var_dump($r);
 		$res[] = $r;
 	}
-	//$res = array_reverse($res);
+	$res = array_reverse($res);
 
 	var_dump($res);
 
-	return $response->withStatus(403);
+	//return $response->withStatus(403);
 	$maxMessageId = 0;
 	foreach ($rows as $row)
 	{
@@ -298,6 +297,7 @@ $app->get('/message', function (Request $request, Response $response) {
 	);
 	$stmt->execute([$userId, $channelId, $maxMessageId, $maxMessageId]);
 
+	return $response->withJson($res);
 	///// iwakami end
 
 
