@@ -256,12 +256,11 @@ $app->get('/message', function (Request $request, Response $response) {
 	$lastMessageId = $request->getParam('last_message_id');
 
 	///// iwakami start
-	/*
-
 	$dbh = getPDO();
 	$stmt = $dbh->prepare(
 	//"select message.id, channel_id, message.content, message.created_at, user_id, name, display_name, avatar_icon from message left outer join user on user.id=message.user_id where message.id>? and channel_id=? order by id limit 100"
-		"select message.id, channel_id, message.created_at, user_id, name, display_name, avatar_icon from message left outer join user on user.id=message.user_id where message.id>? and channel_id=? order by id desc limit 100"
+	//	"select message.id, channel_id, message.created_at, user_id, name, display_name, avatar_icon from message left outer join user on user.id=message.user_id where message.id>? and channel_id=? order by id desc limit 100"
+	"select   message.id,   channel_id,   message.content,   message.created_at,   user_id,   name,   display_name,   avatar_icon from   message left outer join   user on   user.id=message.user_id where   message.id>? and   channel_id=? order by message.id desc limit 100"
 	);
 	$stmt->execute([$lastMessageId, $channelId]);
 	$rows = $stmt->fetchall();
@@ -298,7 +297,6 @@ $app->get('/message', function (Request $request, Response $response) {
 	$stmt->execute([$userId, $channelId, $maxMessageId, $maxMessageId]);
 
 	return $response->withJson($res);
-	*/
 	///// iwakami end
 
 
