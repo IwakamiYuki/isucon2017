@@ -300,6 +300,7 @@ $app->get('/fetch', function (Request $request, Response $response) {
 
 	///// iwakami start
 
+	return $response->withStatus(403);
 	/*
 	$dbh = getPDO();
 
