@@ -81,6 +81,6 @@ for url in 02be8cdc86437df99c6cdcfb47c52f1085d92b1a.png \
            f8a9d2d65300689fdbf9688a05045f56c122bc16.png \
            f906be69b742085556fd0d80ac1241e2693d9872.png
 
-           do
-           echo $url
-           done
+do
+    curl -s localhost/icons/$url > /dev/null
+done
