@@ -256,6 +256,7 @@ $app->get('/message', function (Request $request, Response $response) {
 	$lastMessageId = $request->getParam('last_message_id');
 
 	///// iwakami_2 start
+	/*
 	$dbh = getPDO();
 	$stmt = $dbh->prepare(
 		"SELECT * " .
@@ -311,6 +312,7 @@ $app->get('/message', function (Request $request, Response $response) {
 	$stmt->execute([$userId, $channelId, $maxMessageId, $maxMessageId]);
 
 	return $response->withJson($res);
+	*/
 	///// iwakami_2 end
 
 	///// iwakami start
