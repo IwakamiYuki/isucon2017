@@ -539,6 +539,9 @@ $app->post('/profile', function (Request $request, Response $response) {
 		$stmt->execute();
 		$stmt = $pdo->prepare("UPDATE user SET avatar_icon = ? WHERE id = ?");
 		$stmt->execute([$avatarName, $userId]);
+
+		rename($filepath,'/home/isucon/isubata/webapp/public/icons/' . $avatarName);
+
 	}
 
 	if ($displayName)
