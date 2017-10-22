@@ -300,8 +300,6 @@ $app->get('/fetch', function (Request $request, Response $response) {
 
 	///// iwakami start
 
-	return $response->withStatus(403);
-	/*
 	$dbh = getPDO();
 
 	$res = [];
@@ -320,9 +318,10 @@ $app->get('/fetch', function (Request $request, Response $response) {
 		$res[] = $r;
 	}
 
+	var_dump($res);
+	return $response->withStatus(403);
 	return $response->withJson($res);
 
-	*/
 	///// iwakami end
 
 	$dbh = getPDO();
