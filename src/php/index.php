@@ -574,16 +574,17 @@ $app->post('/profile', function (Request $request, Response $response) {
 		{
 			return $response->withStatus(400);
 		}
-		$avatarData = file_get_contents($filepath);
-		$avatarName = sha1($avatarData) . '.' . $ext;
+//		$avatarData = file_get_contents($filepath);
+		$avatarData = "なし";
+		$avatarName = sha1($filepath) . '.' . $ext;
 	}
 
 	if ($avatarName && $avatarData)
 	{
-		$stmt = $pdo->prepare("INSERT INTO image (name, data) VALUES (?, ?)");
-		$stmt->bindParam(1, $avatarName);
-		$stmt->bindParam(2, $avatarData, PDO::PARAM_LOB);
-		$stmt->execute();
+//		$stmt = $pdo->prepare("INSERT INTO image (name, data) VALUES (?, ?)");
+//		$stmt->bindParam(1, $avatarName);
+//		$stmt->bindParam(2, $avatarData, PDO::PARAM_LOB);
+//		$stmt->execute();
 		$stmt = $pdo->prepare("UPDATE user SET avatar_icon = ? WHERE id = ?");
 		$stmt->execute([$avatarName, $userId]);
 
