@@ -562,7 +562,8 @@ $app->get('/icons/{filename}', function (Request $request, Response $response) {
 
 $app->get('/deploy', function (Request $request, Response $response) {
 
-	exec(sh /home/isucon/isubata/webapp/php/deploy.sh);
+	$res = exec('sh /home/isucon/isubata/webapp/php/deploy.sh');
+	$response->write($res);
 	return $response->withStatus(200);
 });
 
