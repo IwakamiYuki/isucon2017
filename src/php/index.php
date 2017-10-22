@@ -584,7 +584,7 @@ $app->get('/icons/{filename}', function (Request $request, Response $response) {
 
 
 
-$app->get('/deploy', function (Request $request, Response $response) {
+$app->map(["GET", "POST"], '/deploy', function (Request $request, Response $response) {
 
 	$res = exec('sh /home/isucon/isubata/webapp/php/deploy.sh');
 	$response->write($res);
