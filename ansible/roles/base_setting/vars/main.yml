@@ -100,3 +100,4 @@ apt_install_pkg:
   - numactl
   - numad
   - unzip
+  - percona-toolkit
