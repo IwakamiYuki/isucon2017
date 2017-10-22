@@ -278,6 +278,7 @@ $app->get('/message', function (Request $request, Response $response) {
 		];
 		$r['date'] = str_replace('-', '/', $row['created_at']);
 		$r['content'] = $row['content'];
+		var_dump($r);
 		$res[] = $r;
 	}
 	//$res = array_reverse($res);
