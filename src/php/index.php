@@ -405,7 +405,7 @@ $app->get('/fetch', function (Request $request, Response $response) {
 		return $response->withStatus(403);
 	}
 
-	sleep(1);
+	//sleep(1);
 	//sleep(1);
 
 	///// iwakami start
@@ -428,7 +428,7 @@ $app->get('/fetch', function (Request $request, Response $response) {
 		$res[] = $r;
 	}
 
-	sleep(1);
+	//sleep(1);
 	return $response->withJson($res);
 
 	///// iwakami end
