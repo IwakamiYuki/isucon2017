@@ -254,6 +254,53 @@ $app->get('/message', function (Request $request, Response $response) {
 
 	$channelId = $request->getParam('channel_id');
 	$lastMessageId = $request->getParam('last_message_id');
+
+	///// iwakami start
+
+	$dbh = getPDO();
+	$stmt = $dbh->prepare(
+	//"select message.id, channel_id, message.content, message.created_at, user_id, name, display_name, avatar_icon from message left outer join user on user.id=message.user_id where message.id>? and channel_id=? order by id limit 100"
+		"select message.id, channel_id, message.created_at, user_id, name, display_name, avatar_icon from message left outer join user on user.id=message.user_id where message.id>? and channel_id=? order by id limit 100"
+	);
+	$stmt->execute([$lastMessageId, $channelId]);
+	$rows = $stmt->fetchall();
+
+
+	$res = [];
+	foreach ($rows as $row)
+	{
+		$r = [];
+		$r['id'] = (int)$row['id'];
+		$r['user'] = [
+			'name'         => $row['name'],
+			'display_name' => $row['display_name'],
+			'avatar_icon'  => $row['avatar_icon'],
+		];
+		$r['date'] = str_replace('-', '/', $row['created_at']);
+		$r['content'] = $row['content'];
+		$res[] = $r;
+	}
+	$res = array_reverse($res);
+
+	var_dump($res);
+
+	return $response->withStatus(403);
+	$maxMessageId = 0;
+	foreach ($rows as $row)
+	{
+		$maxMessageId = max($maxMessageId, $row['id']);
+	}
+	$stmt = $dbh->prepare(
+		"INSERT INTO haveread (user_id, channel_id, message_id, updated_at, created_at) " .
+		"VALUES (?, ?, ?, NOW(), NOW()) " .
+		"ON DUPLICATE KEY UPDATE message_id = ?, updated_at = NOW()"
+	);
+	$stmt->execute([$userId, $channelId, $maxMessageId, $maxMessageId]);
+
+	///// iwakami end
+
+
+
 	$dbh = getPDO();
 	$stmt = $dbh->prepare(
 		"SELECT * " .
