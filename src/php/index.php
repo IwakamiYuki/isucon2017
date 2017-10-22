@@ -256,6 +256,7 @@ $app->get('/message', function (Request $request, Response $response) {
 	$lastMessageId = $request->getParam('last_message_id');
 
 	///// iwakami start
+	var_dump('aaaa');
 	$dbh = getPDO();
 	$stmt = $dbh->prepare(
 	//"select message.id, channel_id, message.content, message.created_at, user_id, name, display_name, avatar_icon from message left outer join user on user.id=message.user_id where message.id>? and channel_id=? order by id limit 100"
