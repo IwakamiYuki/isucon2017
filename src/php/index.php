@@ -444,6 +444,48 @@ $app->get('/history/{channel_id}', function (Request $request, Response $respons
 	}
 
 	$offset = ($page - 1) * $pageSize;
+
+
+	///// iwakami start
+
+	$stmt = $dbh->prepare(
+		"select   message.id,   message.user_id,   message.created_at,   message.content,   user.name,   user.display_name,   user.avatar_icon from message left outer join user on message.user_id=user.id where channel_id=? order by id desc limit $pageSize offset $offset"
+	);
+	$stmt->execute([$channelId]);
+	$rows = $stmt->fetchall();
+
+	$messages = [];
+	foreach ($rows as $row)
+	{
+		$r = [];
+		$r['id'] = (int)$row['id'];
+		$r['user'] = [
+			'name' => $row['name'],
+			'display_name' => $row['display_name'],
+			'avatar_icon' => $row['avatar_icon'],
+		];
+		$r['date'] = str_replace('-', '/', $row['created_at']);
+		$r['content'] = $row['content'];
+		$messages[] = $r;
+	}
+	$messages = array_reverse($messages);
+
+	list($channels, $description) = get_channel_list_info($channelId);
+
+	return $this->view->render(
+		$response,
+		'history.twig',
+		[
+			'channels'   => $channels,
+			'channel_id' => $channelId,
+			'messages'   => $messages,
+			'max_page'   => $maxPage,
+			'page'       => $page,
+		]
+	);
+
+	///// iwakami end
+
 	$stmt = $dbh->prepare(
 		"SELECT * " .
 		"FROM message " .
