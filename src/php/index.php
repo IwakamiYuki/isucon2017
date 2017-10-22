@@ -274,7 +274,7 @@ $app->get('/message', function (Request $request, Response $response) {
 		$r['user'] = [
 			'name'         => $row['name'],
 			'display_name' => $row['display_name'],
-			'avatar_icon'  => $row['avator_icon'],
+			'avatar_icon'  => $row['avatar_icon'],
 		];
 		$r['date'] = str_replace('-', '/', $row['created_at']);
 		$r['content'] = $row['content'];
