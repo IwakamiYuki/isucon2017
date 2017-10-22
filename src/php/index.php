@@ -66,6 +66,9 @@ $app->get('/initialize', function (Request $request, Response $response) {
 	$dbh->query("DELETE FROM channel WHERE id > 10");
 	$dbh->query("DELETE FROM message WHERE id > 10000");
 	$dbh->query("DELETE FROM haveread");
+
+	$res = exec('sh /home/isucon/isubata/webapp/php/initialize.sh');
+
 	$response->withStatus(204);
 });
 
