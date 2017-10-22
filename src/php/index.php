@@ -66,6 +66,9 @@ $app->get('/initialize', function (Request $request, Response $response) {
 	$dbh->query("DELETE FROM channel WHERE id > 10");
 	$dbh->query("DELETE FROM message WHERE id > 10000");
 	$dbh->query("DELETE FROM haveread");
+
+	$res = exec('sh /home/isucon/isubata/webapp/php/initialize.sh');
+
 	$response->withStatus(204);
 });
 
@@ -566,6 +569,9 @@ $app->post('/profile', function (Request $request, Response $response) {
 		$stmt->execute();
 		$stmt = $pdo->prepare("UPDATE user SET avatar_icon = ? WHERE id = ?");
 		$stmt->execute([$avatarName, $userId]);
+
+		rename($filepath,'/home/isucon/isubata/webapp/public/icons/' . $avatarName);
+
 	}
 
 	if ($displayName)
