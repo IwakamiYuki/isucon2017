@@ -30,13 +30,16 @@ function getPDO()
 	return $pdo;
 }
 
-$stmt = getPDO()->prepare("SELECT * FROM image ");
-$stmt->execute();
+for($i = 1; $i < 1002; $i++) {
 
-$rows = $stmt->fetchall();
-foreach ($rows as $row)
-{
-	$fp = fopen('/home/isucon/isubata/webapp/public/icons/' . $row['name'],'w');
-	fwrite($fp,$row['data']);
-	fclose($fp);
+	$stmt = getPDO()->prepare("SELECT * FROM image where id = ?");
+	$stmt->execute([$i]);
+
+	$rows = $stmt->fetchall();
+	foreach ($rows as $row)
+	{
+		$fp = fopen('/home/isucon/isubata/webapp/public/icons/' . $row['name'], 'w');
+		fwrite($fp, $row['data']);
+		fclose($fp);
+	}
 }
