@@ -297,6 +297,30 @@ $app->get('/fetch', function (Request $request, Response $response) {
 
 	//sleep(1);
 
+	///// iwakami start
+
+	$dbh = getPDO();
+
+	$res = [];
+	$stmt = $dbh->prepare(
+		"select channel_id, count(1) unread from (select id message_id, message.channel_id, last_message_id, case when id<=last_message_id then 1 else 0 end is_read from message left outer join (select  id channel_id, case when message_id is null then 0 else message_id end last_message_id from channel  left outer join (select channel_id,message_id from haveread where user_id=?) t1 on channel.id=t1.channel_id ) t2 on message.channel_id=t2.channel_id ) t3 where is_read=0 group by channel_id;"
+	);
+	$stmt->execute([$userId, $userId]);
+
+	$rows = $stmt->fetchall();
+
+	foreach ($rows as $row)
+	{
+		$r = [];
+		$r['channel_id'] = (int)$row['channel_id'];
+		$r['unread'] = (int)$row['unread'];
+		$res[] = $r;
+	}
+
+	return $response->withJson($res);
+
+	///// iwakami end
+
 	$dbh = getPDO();
 	$stmt = $dbh->query('SELECT id FROM channel');
 	$rows = $stmt->fetchall();
